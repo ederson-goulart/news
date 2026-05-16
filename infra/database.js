@@ -7,17 +7,30 @@ async function query(queryObject) {
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    ssl: getSSLConfig(),
   });
 
   try {
     await client.connect();
     return await client.query(queryObject);
+  } catch (error) {
+    console.error("Database query error:", error);
+    throw error;
   } finally {
     await client.end();
   }
+}
+
+function getSSLConfig() {
+  // Sem SSL no desenvolvimento
+  if (process.env.NODE_ENV === "development") {
+    return false;
+  }
+
+  // SSL em produção
+  return {
+    rejectUnauthorized: false,
+  };
 }
 
 export default { query };

@@ -30,8 +30,13 @@ export default {
 function getSSLValues() {
   if (process.env.POSTGRES_CA) {
     return {
-      ca: process.env.POSTGRES_CA,
+      rejectUnauthorized: true,
+      ca: process.env.POSTGRES_CA.replace(/\\n/g, "\n"),
     };
   }
-  return process.env.NODE_ENV === "development" ? false : false;
+
+  return process.env.NODE_ENV === "development"
+    ? false
+    : { rejectUnauthorized: false };
 }
+console.log(process.env.POSTGRES_CA?.substring(0, 100));

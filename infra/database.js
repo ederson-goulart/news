@@ -9,6 +9,7 @@ async function query(queryObject) {
     database: process.env.POSTGRES_DB,
     ssl: getSSLValues(),
   });
+  console.log(getSSLValues());
 
   try {
     await client.connect();
@@ -32,5 +33,5 @@ function getSSLValues() {
       ca: process.env.POSTGRES_CA,
     };
   }
-  return process.env.NODE_ENV === "development" ? false : true;
+  return process.env.NODE_ENV === "development" ? false : false;
 }

@@ -29,9 +29,15 @@ export default {
 
 function getSSLValues() {
   if (process.env.POSTGRES_CA) {
+    const cert = process.env.POSTGRES_CA.replace(/\\n/g, "\n") // converte \n literais
+      .trim();
+
+    console.log("SSL preview:");
+    console.log(cert.substring(0, 60));
+
     return {
       rejectUnauthorized: true,
-      ca: process.env.POSTGRES_CA.replace(/\\n/g, "\n"),
+      ca: cert,
     };
   }
 
@@ -39,4 +45,7 @@ function getSSLValues() {
     ? false
     : { rejectUnauthorized: false };
 }
+
+console.log("RAW:");
+console.log(JSON.stringify(process.env.POSTGRES_CA));
 console.log(process.env.POSTGRES_CA?.substring(0, 100));

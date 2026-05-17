@@ -30,6 +30,7 @@ async function status(request, response) {
         version: databaseVersionValue,
         max_connections: databaseMaxConnectionsValue,
         opened_connections: databaseOpenedConnectionsValue,
+        name: databaseName,
       },
     },
   });

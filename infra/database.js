@@ -29,10 +29,11 @@ function getSSLConfig() {
 
   // SSL em produção
 
-  return false;
+  //   return false;
+  // }
+  return {
+    rejectUnauthorized: false,
+  };
 }
-// return {
-//   rejectUnauthorized: false,
-// };
 
 export default { query };

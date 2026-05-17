@@ -22,15 +22,12 @@ async function query(queryObject) {
 }
 
 function getSSLConfig() {
-  // Com SSL no desenvolvimento
-  if (process.env.NODE_ENV === "production") {
-    return true;
+  // Sem SSL no desenvolvimento
+  if (process.env.NODE_ENV === "development") {
+    return false;
   }
 
   // SSL em produção
-
-  //   return false;
-  // }
   return {
     rejectUnauthorized: false,
   };

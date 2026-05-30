@@ -37,6 +37,7 @@ describe("POST /api/v1/users", () => {
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
     });
+
     test("With duplicated Email", async () => {
       const response1 = await fetch("http://localhost:3000/api/v1/users", {
         method: "POST",
@@ -72,6 +73,43 @@ describe("POST /api/v1/users", () => {
         status_code: 400,
       });
     });
+
+    test("With duplicated username", async () => {
+      const response3 = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "usernameduplicado",
+          email: "usernameduplicado1@example.com",
+          password: "password123",
+        }),
+      });
+      expect(response3.status).toBe(201);
+
+      const response4 = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "Usernameduplicado",
+          email: "usernameduplicado2@example.com",
+          password: "password123",
+        }),
+      });
+      expect(response4.status).toBe(400);
+
+      const response4Body = await response4.json();
+      expect(response4Body).toEqual({
+        name: "ValidationError",
+        message: "Username already exists.",
+        action: "Please use a different username.",
+        status_code: 400,
+      });
+    });
+
   });
 });
 //TODO Add more tests for duplicated username

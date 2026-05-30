@@ -3,6 +3,7 @@ import { ValidationError } from "infra/errors";
 
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
+  await validateUniqueUsername(userInputValues.username);
 
   const newUser = await runInsertQuery(userInputValues);
   return newUser;
@@ -16,6 +17,19 @@ async function create(userInputValues) {
       throw new ValidationError({
         message: "Email already exists.",
         action: "Please use a different email address.",
+      });
+    }
+  }
+
+   async function validateUniqueUsername(username) {
+    const results = await database.query({
+      text: "SELECT username FROM users WHERE LOWER(username) = LOWER($1);",
+      values: [username],
+    });
+    if (results.rowCount > 0) {
+      throw new ValidationError({
+        message: "Username already exists.",
+        action: "Please use a different username.",
       });
     }
   }

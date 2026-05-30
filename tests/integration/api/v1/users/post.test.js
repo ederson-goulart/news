@@ -74,3 +74,4 @@ describe("POST /api/v1/users", () => {
     });
   });
 });
+//TODO Add more tests for duplicated username

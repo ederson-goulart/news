@@ -109,7 +109,6 @@ describe("POST /api/v1/users", () => {
         status_code: 400,
       });
     });
-
   });
 });
 //TODO Add more tests for duplicated username

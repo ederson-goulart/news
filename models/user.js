@@ -21,7 +21,7 @@ async function create(userInputValues) {
     }
   }
 
-   async function validateUniqueUsername(username) {
+  async function validateUniqueUsername(username) {
     const results = await database.query({
       text: "SELECT username FROM users WHERE LOWER(username) = LOWER($1);",
       values: [username],
